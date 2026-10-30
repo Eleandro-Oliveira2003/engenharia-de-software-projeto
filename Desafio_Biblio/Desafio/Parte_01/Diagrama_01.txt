@@ -1,0 +1,49 @@
+@startuml
+title Biblio - Renovar emprestimo (Parte 1)
+autonumber
+hide footbox
+
+actor "Usuario" as Usuario
+boundary "Tela de Renovacao\n<<boundary>>" as Tela
+control "Controlador de Renovacao\n<<control>>" as Controle
+entity "Emprestimo\n<<entity>>" as Emprestimo
+entity "Livro\n<<entity>>" as Livro
+entity "Reserva\n<<entity>>" as Reserva
+boundary "API de Pagamento\n<<sistema externo>>" as API
+
+Usuario -> Tela: solicitarRenovacao(idEmprestimo)
+Tela -> Controle: renovarEmprestimo(idEmprestimo)
+Controle -> Emprestimo: obterLivro()
+Emprestimo --> Controle: livro
+Controle -> Livro: possuiReservaAtiva()
+Livro -> Reserva: existeReservaParaLivro(idLivro)
+Reserva --> Livro: reservaExiste
+Livro --> Controle: possuiReserva
+
+alt Livro possui reserva ativa
+    Controle -> Tela: informarBloqueioPorReserva()
+    Tela --> Usuario: Renovacao nao permitida: livro reservado
+else Livro nao possui reserva ativa
+    Controle -> Emprestimo: estaAtrasado()
+    Emprestimo --> Controle: atrasado
+    alt Emprestimo esta atrasado
+        Controle -> Tela: informarAtrasoEOpcoes()
+        Tela --> Usuario: Entregue o livro ou pague a multa
+        opt Usuario escolhe pagar via Pix
+            Usuario -> Tela: escolherPagamentoPix()
+            Tela -> Controle: gerarPixDaMulta(idEmprestimo)
+            Controle -> Emprestimo: calcularMultaAteOMomento()
+            Emprestimo --> Controle: valorMulta
+            Controle -> API: gerarCobrancaPix(valorMulta)
+            API --> Controle: codigoPix
+            Controle -> Tela: apresentarCodigoPix(codigoPix, valorMulta)
+            Tela --> Usuario: exibir codigo Pix
+        end
+    else Emprestimo nao esta atrasado
+        Controle -> Emprestimo: renovar()
+        Emprestimo --> Controle: renovacaoConfirmada
+        Controle -> Tela: exibirConfirmacaoRenovacao()
+        Tela --> Usuario: Emprestimo renovado
+    end
+end
+@enduml
