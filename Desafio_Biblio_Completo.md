@@ -78,5 +78,5 @@ Empresa D: R$ 10,50
 - [x] Parte 3 tem implementação Strategy em Java.
 - [x] Parte 3 tem classe de demonstração com cenário e quatro valores.
 - [x] Parte 3 tem diagrama PlantUML e PNG.
-- [ ] Colega confirma compilação e execução em ambiente com JDK.
-- [ ] Colega gera e confere o ZIP com todas as partes.
+- [ ] Falta confirma compilação e execução em ambiente com JDK.
+- [ ] Falta gera e confere o ZIP com todas as partes.
