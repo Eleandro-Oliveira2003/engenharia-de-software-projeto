@@ -1,15 +1,15 @@
 @startuml
-title Biblio — Renovar empréstimo (Parte 1)
+title Biblio - Renovar emprestimo (Parte 1)
 autonumber
 hide footbox
 
-actor "Usuário" as Usuario
-boundary "Tela de Renovação\n«boundary»" as Tela
-control "Controlador de Renovação\n«control»" as Controle
-entity "Empréstimo\n«entity»" as Emprestimo
-entity "Livro\n«entity»" as Livro
-entity "Reserva\n«entity»" as Reserva
-boundary "API de Pagamento\n«boundary / sistema externo»" as API
+actor "Usuario" as Usuario
+boundary "Tela de Renovacao\n<<boundary>>" as Tela
+control "Controlador de Renovacao\n<<control>>" as Controle
+entity "Emprestimo\n<<entity>>" as Emprestimo
+entity "Livro\n<<entity>>" as Livro
+entity "Reserva\n<<entity>>" as Reserva
+boundary "API de Pagamento\n<<sistema externo>>" as API
 
 Usuario -> Tela: solicitarRenovacao(idEmprestimo)
 Tela -> Controle: renovarEmprestimo(idEmprestimo)
@@ -22,30 +22,28 @@ Livro --> Controle: possuiReserva
 
 alt Livro possui reserva ativa
     Controle -> Tela: informarBloqueioPorReserva()
-    Tela --> Usuario: Renovação não permitida:\nlivro reservado
-else Livro não possui reserva ativa
+    Tela --> Usuario: Renovacao nao permitida: livro reservado
+else Livro nao possui reserva ativa
     Controle -> Emprestimo: estaAtrasado()
     Emprestimo --> Controle: atrasado
-
-    alt Empréstimo está atrasado
+    alt Emprestimo esta atrasado
         Controle -> Tela: informarAtrasoEOpcoes()
-        Tela --> Usuario: Entregue o livro ou pague\na multa para regularizar
-
-        opt Usuário escolhe pagar a multa via Pix
+        Tela --> Usuario: Entregue o livro ou pague a multa
+        opt Usuario escolhe pagar via Pix
             Usuario -> Tela: escolherPagamentoPix()
             Tela -> Controle: gerarPixDaMulta(idEmprestimo)
             Controle -> Emprestimo: calcularMultaAteOMomento()
             Emprestimo --> Controle: valorMulta
             Controle -> API: gerarCobrancaPix(valorMulta)
             API --> Controle: codigoPix
-            Controle -> Tela: apresentarCodigoPix(codigoPix,\nvalorMulta)
-            Tela --> Usuario: exibir código Pix
+            Controle -> Tela: apresentarCodigoPix(codigoPix, valorMulta)
+            Tela --> Usuario: exibir codigo Pix
         end
-    else Empréstimo não está atrasado
+    else Emprestimo nao esta atrasado
         Controle -> Emprestimo: renovar()
         Emprestimo --> Controle: renovacaoConfirmada
         Controle -> Tela: exibirConfirmacaoRenovacao()
-        Tela --> Usuario: Empréstimo renovado
+        Tela --> Usuario: Emprestimo renovado
     end
 end
 @enduml
