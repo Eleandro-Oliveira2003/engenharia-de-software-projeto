@@ -1,4 +1,3 @@
-﻿# Projeto Biblio — acompanhamento
+﻿# Desafio Biblio
 
-Consulte o documento principal na raiz do repositório: `../Desafio_Biblio_Completo.md`.
-Mantenha esta cópia sincronizada quando atualizar tarefas ou estado das entregas.
+A entrega está organizada por parte em `Desafio/`. O resumo do estado, critério de entrega e tarefa que falta para o colega estão em `Desafio_Biblio_Completo.md`.

@@ -1,5 +1,8 @@
-﻿# Projeto Biblio - Engenharia de Software
+﻿# Projeto Biblio — Engenharia de Software
 
-A estrutura do desafio, o inventário do que já foi feito e as tarefas para concluir estão em [Desafio_Biblio_Completo.md](Desafio_Biblio_Completo.md).
+- [Acompanhamento geral e tarefas pendentes](Desafio_Biblio_Completo.md)
+- [Entrega organizada](Desafio_Biblio/Desafio/)
+- [Parte 3: diagrama de classes](Desafio_Biblio/Desafio/Parte_03/Diagrama_03.png)
+- [Parte 3: código Java e instruções](Desafio_Biblio/Desafio/Parte_03/codigo/README.md)
 
-A entrega organizada está em `Desafio_Biblio/Desafio/`, dividida em `Parte_01`, `Parte_02` e `Parte_03`. As classes Java e instruções de execução ficam em `Parte_03/codigo`.
+A Parte 3 aplica Strategy ao cálculo de frete das empresas A, B, C e D, com os valores de teste definidos pelo professor.

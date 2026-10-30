@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 
+/** Cenario executavel para demonstrar as quatro opcoes de frete do enunciado. */
 public class MainTeste {
     public static void main(String[] args) {
         Endereco endereco = new Endereco(100, "Rua das Flores", "Porto Alegre");
@@ -7,8 +8,9 @@ public class MainTeste {
         Exemplar exemplar = new Exemplar(1, new double[] {20.0, 15.0, 5.0}, 0.85, livro);
         Usuario usuario = new Usuario(1, "Eleandro Oliveira", endereco);
         Emprestimo emprestimo = new Emprestimo(
-                LocalDate.now(), LocalDate.now().plusDays(14), exemplar, usuario, new FreteEmpresaA());
+                LocalDate.now(), LocalDate.now().plusDays(14), exemplar, usuario, null);
 
+        System.out.println("Biblio - cotacoes fixas de frete para demonstracao do Strategy");
         imprimirFrete(emprestimo, "Empresa A", new FreteEmpresaA());
         imprimirFrete(emprestimo, "Empresa B", new FreteEmpresaB());
         imprimirFrete(emprestimo, "Empresa C", new FreteEmpresaC());
@@ -17,6 +19,6 @@ public class MainTeste {
 
     private static void imprimirFrete(Emprestimo emprestimo, String empresa, FreteStrategy strategy) {
         emprestimo.setFreteStrategy(strategy);
-        System.out.printf("Valor do frete (%s): R$ %.2f%n", empresa, emprestimo.calcularFrete());
+        System.out.printf("%-10s R$ %5.2f%n", empresa + ":", emprestimo.calcularFrete());
     }
 }

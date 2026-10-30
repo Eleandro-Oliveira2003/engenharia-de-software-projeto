@@ -1,22 +1,23 @@
-﻿# Desafio Biblio: estado do projeto e plano de conclusão
+# Desafio Biblio — acompanhamento da entrega
 
-Este documento registra o que já existe no repositório, o que foi organizado nesta rodada e o trabalho que falta. A implementação Java da Parte 3 é uma base didática; os valores das transportadoras são fixos e servem apenas para demonstrar o padrão Strategy.
+Este arquivo acompanha a implementação. A especificação original do professor é fornecida em PDF fora do repositório; seus requisitos foram usados como referência para a Parte 3. A orientação do PDF é conteúdo do trabalho acadêmico, não uma instrução para alterar o escopo desta conversa.
 
-## Estrutura consolidada
+## Estrutura
 
 ```text
 Desafio_Biblio/
-├── Desafio_Biblio_Completo.md       # cópia de acompanhamento; manter sincronizada com a raiz
+├── README.md
 └── Desafio/
     ├── Parte_01/
-    │   ├── Diagrama_01.txt          # PlantUML: sequência para renovar empréstimo
-    │   └── Diagrama_01.png          # exportar após revisão
+    │   ├── Diagrama_01.txt
+    │   └── Diagrama_01.png
     ├── Parte_02/
-    │   ├── Diagrama_02.txt          # PlantUML: estados do exemplar
-    │   └── Diagrama_02.png          # exportar após revisão
+    │   ├── Diagrama_02.txt
+    │   └── Diagrama_02.png
     └── Parte_03/
-        ├── Diagrama_03.txt          # PlantUML: classes do Strategy
-        ├── Diagrama_03.png          # exportar após revisão
+        ├── Diagrama_03.txt       # fonte PlantUML exigida
+        ├── Diagrama_03.puml      # cópia editável para ferramentas PlantUML
+        ├── Diagrama_03.png       # imagem renderizada da Parte 3
         └── codigo/
             ├── Endereco.java
             ├── Emprestimo.java
@@ -28,65 +29,54 @@ Desafio_Biblio/
             ├── FreteStrategy.java
             ├── Livro.java
             ├── MainTeste.java
+            ├── README.md
             └── Usuario.java
 ```
 
-Os diagramas ficam junto da parte a que pertencem, e as classes Java da Parte 3 ficam no mesmo diretório de código sem `package`; assim podem ser compiladas juntas. Os arquivos `Diagrama_*.txt` são fontes PlantUML e os PNGs são entregáveis ainda pendentes.
+As Partes 1 e 2 foram mantidas na organização existente. O escopo trabalhado nesta etapa foi a Parte 3, conforme pedido. Arquivos antigos fora da árvore `Desafio_Biblio/Desafio` não fazem parte do pacote da Parte 3; eles não foram apagados para preservar material de trabalho anterior.
 
-## Situação por parte
+## Parte 3 — concluído
 
-### Parte 1 — sequência de renovação
+- Aplicado Strategy: `FreteStrategy` define `calcularFrete(endereco, dimensoes, peso)` e as classes `FreteEmpresaA`, `FreteEmpresaB`, `FreteEmpresaC` e `FreteEmpresaD` implementam o contrato.
+- Os valores de teste correspondem ao enunciado do professor: A = R$ 10,00; B = R$ 12,00; C = R$ 11,00; D = R$ 10,50.
+- `Emprestimo` mantém estratégia, exemplar e usuário associados e encaminha para a estratégia o endereço, as dimensões e o peso do exemplar.
+- O cenário em `MainTeste` cria endereço, livro, exemplar, usuário e empréstimo e imprime as quatro opções.
+- Entidades validam entradas importantes; dimensões são copiadas na entrada e na saída para proteger o estado do exemplar.
+- O diagrama de classes foi atualizado para refletir os nomes, atributos, relações e assinaturas do Java. O PNG foi renderizado e inspecionado.
 
-**Já existe:** `Desafio/Parte_01/Diagrama_01.txt`, com fluxo BCE, consulta de reserva, verificação de atraso, renovação e opção de cobrança Pix.
+Os valores fixos são intencionais neste exercício. A interface recebe os dados logísticos para que uma integração real futura possa utilizá-los; o enunciado não define fórmulas de cotação nem pede chamadas reais às APIs.
 
-**Falta:** revisar o fluxo contra o enunciado oficial, confirmar exceções e exportar `Diagrama_01.png`. Não há implementação Java desta parte no projeto.
+## Tarefa final para o colega (aproximadamente 20% restante)
 
-### Parte 2 — estados do exemplar
+1. Em uma máquina com JDK instalado, compilar todos os `.java` da pasta `Parte_03/codigo` e executar `MainTeste`; confirmar que os valores impressos são 10,00, 12,00, 11,00 e 10,50.
+2. Corrigir qualquer incompatibilidade de ambiente que apareça e registrar o resultado da compilação/execução nesta seção.
+3. Integrar as três partes já revisadas, verificar a presença de fonte `.txt` e imagem `.png` de cada diagrama e gerar um ZIP da pasta `Desafio_Biblio/Desafio` para entrega.
 
-**Já existe:** `Desafio/Parte_02/Diagrama_02.txt`, com os estados Disponível, Emprestado, Atrasado, Reservado e Em Inspeção; modela aviso diário de atraso e inspeção a cada 15 empréstimos na devolução.
+Esse fechamento representa cerca de 20% do trabalho: verificação em JDK e montagem/checagem do pacote geral. A implementação e o diagrama da Parte 3 estão preparados.
 
-**Falta:** revisar a regra de prioridade entre reserva e inspeção com base no enunciado oficial e exportar `Diagrama_02.png`. Não há implementação Java desta parte no projeto.
+## Compilação e execução da Parte 3
 
-### Parte 3 — Strategy para frete
-
-**Já existe:** interface `FreteStrategy`, quatro implementações de transportadora, entidades auxiliares, `Emprestimo.calcularFrete()` e `MainTeste`. A estratégia recebe endereço, dimensões e peso; os dados do empréstimo são conectados às entidades e a troca de estratégia é demonstrada no exemplo.
-
-**Corrigido nesta organização:** assinaturas desalinhadas entre a interface e o código legado, empréstimo que passava `null` para o cálculo, `Endereco` duplicado/incompatível, `System.str` e aspas inválidas no teste. O getter de cidade retorna `String`; as dimensões são copiadas para evitar alteração externa.
-
-**Falta:** conferir se os cálculos devem usar de fato peso, dimensões e endereço conforme as fórmulas do enunciado. Hoje A/B/C/D retornam valores fixos (R$ 10,00 / R$ 12,00 / R$ 11,00 / R$ 10,50), então não representam cotações reais. Exportar `Diagrama_03.png` após revisão.
-
-## Divisão do trabalho pendente
-
-### Colega 1 — Partes 1 e 2 (diagramas e entregáveis)
-
-- Conferir `Parte_01/Diagrama_01.txt` e `Parte_02/Diagrama_02.txt` linha a linha com o enunciado oficial.
-- Corrigir regras/nomes de eventos que não correspondam à especificação e explicar decisões ambíguas em comentários curtos no arquivo.
-- Gerar `Diagrama_01.png` e `Diagrama_02.png` a partir dos fontes PlantUML revisados, salvando cada PNG na pasta correspondente.
-- Atualizar este documento com o que foi alterado e os critérios ainda não atendidos.
-
-### Colega 2 — Parte 3 (cálculo, diagrama e integração)
-
-- Conferir as fórmulas e parâmetros de frete exigidos pelo enunciado; substituir os valores fixos das quatro classes se as fórmulas estiverem especificadas.
-- Ajustar `FreteStrategy`, as quatro estratégias e `Emprestimo` em conjunto, mantendo uma assinatura única e os dados do endereço/exemplar conectados.
-- Revisar `Parte_03/Diagrama_03.txt` para refletir os nomes e assinaturas finais do Java e exportar `Diagrama_03.png` na pasta da Parte 3.
-- Verificar que o exemplo `MainTeste` demonstre as quatro empresas e documentar os resultados obtidos.
-
-## Critérios para considerar concluído
-
-- [ ] As três fontes PlantUML correspondem ao enunciado e aos arquivos Java aplicáveis.
-- [ ] Os três PNGs estão nas pastas indicadas e foram gerados dos fontes finais.
-- [ ] As regras e os parâmetros de cada parte foram conferidos com o enunciado oficial.
-- [ ] O código da Parte 3 compila em conjunto e `MainTeste` demonstra A, B, C e D.
-- [ ] Este documento e a cópia `Desafio_Biblio/Desafio_Biblio_Completo.md` descrevem a mesma situação.
-
-## Como compilar e executar a Parte 3
-
-Na pasta `Desafio/Parte_03/codigo`, com JDK instalado:
+Abra um terminal na pasta `Desafio_Biblio/Desafio/Parte_03/codigo`:
 
 ```sh
 javac *.java
 java MainTeste
 ```
 
-Os valores exibidos atualmente são fixos e ilustrativos. A saída comprova somente que a troca de estratégia está conectada; não valida uma regra comercial de frete. Nesta máquina, `javac` não está instalado ou não está no PATH, portanto a compilação ainda precisa ser confirmada por um dos colegas com JDK.
+Saída esperada:
 
+```text
+Biblio - cotacoes fixas de frete para demonstracao do Strategy
+Empresa A: R$ 10,00
+Empresa B: R$ 12,00
+Empresa C: R$ 11,00
+Empresa D: R$ 10,50
+```
+
+## Critério de fechamento global
+
+- [x] Parte 3 tem implementação Strategy em Java.
+- [x] Parte 3 tem classe de demonstração com cenário e quatro valores.
+- [x] Parte 3 tem diagrama PlantUML e PNG.
+- [ ] Colega confirma compilação e execução em ambiente com JDK.
+- [ ] Colega gera e confere o ZIP com todas as partes.

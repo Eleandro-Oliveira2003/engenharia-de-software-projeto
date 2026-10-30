@@ -1,14 +1,22 @@
 @startuml
-title Strategy para calculo de frete (Parte 3)
+title Strategy para cotacao de frete - Parte 3
 skinparam classAttributeIconSize 0
 
 interface FreteStrategy {
-  + calcular(endereco: Endereco, exemplar: Exemplar): double
+  + calcularFrete(endereco: Endereco, dimensoes: double[], peso: double): double
 }
-class FreteEmpresaA
-class FreteEmpresaB
-class FreteEmpresaC
-class FreteEmpresaD
+class FreteEmpresaA {
+  + calcularFrete(endereco: Endereco, dimensoes: double[], peso: double): double
+}
+class FreteEmpresaB {
+  + calcularFrete(endereco: Endereco, dimensoes: double[], peso: double): double
+}
+class FreteEmpresaC {
+  + calcularFrete(endereco: Endereco, dimensoes: double[], peso: double): double
+}
+class FreteEmpresaD {
+  + calcularFrete(endereco: Endereco, dimensoes: double[], peso: double): double
+}
 FreteStrategy <|.. FreteEmpresaA
 FreteStrategy <|.. FreteEmpresaB
 FreteStrategy <|.. FreteEmpresaC
@@ -22,12 +30,13 @@ class Emprestimo {
   - exemplar: Exemplar
   - usuario: Usuario
   + calcularFrete(): double
-  + setFreteStrategy(strategy: FreteStrategy): void
+  + setFreteStrategy(freteStrategy: FreteStrategy): void
 }
 class Exemplar {
   - codigo: int
-  - dimensoes: double[]
+  - dimensoes: double[3]
   - peso: double
+  - livro: Livro
 }
 class Livro {
   - titulo: String
@@ -36,6 +45,7 @@ class Livro {
 class Usuario {
   - codigo: int
   - nome: String
+  - endereco: Endereco
 }
 class Endereco {
   - numero: int
@@ -43,9 +53,9 @@ class Endereco {
   - cidade: String
 }
 
-Emprestimo --> FreteStrategy : usa
-Emprestimo --> Exemplar
-Emprestimo --> Usuario
-Exemplar --> Livro
-Usuario --> Endereco
+Emprestimo o--> "1" FreteStrategy : estrategia selecionada
+Emprestimo --> "1" Exemplar : livro deste emprestimo
+Emprestimo --> "1" Usuario : solicitante
+Exemplar --> "1" Livro : titulo
+Usuario --> "1" Endereco : entrega
 @enduml
